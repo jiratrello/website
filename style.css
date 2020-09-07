@@ -1,7 +1,28 @@
 body{
+  margin: 0px;
   background: grey;
-  /*color: #0f0;*/
+  font-family: "Lucida Console", Courier, monospace;
 }
+
 a:hover {
   font-style: italic;
+}
+
+#header {
+  position: absolute;
+  margin: 8px;
+}
+
+#threeDeeParent {
+	display: flex;
+  width: 100%;
+	height: 100vh;
+  padding: 0 0;
+  background: red; 
+}
+
+#threeDee {
+  width: 500px;
+  height: 500px;
+  margin: auto auto;
 }
