@@ -1,7 +1,7 @@
 body{
   background: grey;
-  color: #0f0;
+  /*color: #0f0;*/
 }
-a{
-  color: #00f
+a:hover {
+  font-style: italic;
 }
