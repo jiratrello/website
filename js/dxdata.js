@@ -25,7 +25,7 @@ const dxData = [
     },
     {
         name: 'Dystropicana',
-        description: 'Shits fucked',
+        description: 'Multimedia archipelago',
         year: '2016',
         url: "https://aaasoftwa.re/dystropicana/",
         geo: "",

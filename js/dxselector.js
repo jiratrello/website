@@ -1,6 +1,8 @@
+//interface
 let dxDataElements = [];
 let debugSVG = null;
 
+//threejs
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, 1, 0.1, 1000 );
 const renderer = new THREE.WebGLRenderer( { alpha: true } );
@@ -11,6 +13,7 @@ const cube = new THREE.Mesh( geometry, material );
 scene.add( cube );
 camera.position.z = 5;
 
+//init
 window.onload = function() {
 	const container = document.getElementById("threeDee");
 	renderer.setSize( container.clientWidth, container.clientHeight );
@@ -36,9 +39,10 @@ window.onload = function() {
 	menuAnimate();
 }
 
+//debug gizmos
 function hackerMode(){
 	createDebugCircle(window.innerWidth / 2, window.innerHeight / 2, 350);
-	window.open("https://youtu.be/VMRaCW6OtXM");
+	// window.open("https://youtu.be/VMRaCW6OtXM");
 }
 
 function createDxElement(dxData, x, y) {
