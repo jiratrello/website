@@ -47,7 +47,7 @@ function hackerMode(){
 
 function createDxElement(dxData, x, y) {
 	let parentelement = document.createElement("div");
-	parentelement.innerHTML = "<div>"+dxData.name+"</div><div>"+dxData.description+"</div>";
+	parentelement.innerHTML = "<div>"+dxData.year+"</div><div>"+dxData.name+"</div><div>"+dxData.description+"</div>";
 	parentelement.className = "dxElement";
 	//'px' to convert to pixels
 	parentelement.style.left = x+'px';
@@ -63,10 +63,10 @@ function radialPosition(angle, distance) {
 }
 
 function animate() {
-	requestAnimationFrame( animate );
 	renderer.render( scene, camera );
 	cube.rotation.x += 0.01;
 	cube.rotation.y += 0.01;
+	requestAnimationFrame( animate );
 }
 
 function createDebugCircle(x, y, radius)
@@ -92,9 +92,8 @@ function createDebugCircle(x, y, radius)
 }
 
 function menuAnimate() {
-	requestAnimationFrame (menuAnimate);
 	const distance = 350;
-	const rate = 0.001;
+	const rate = 0.0005;
 	const centerX = window.innerWidth / 2;
 	const centerY = window.innerHeight / 2;
 	const angleDelta = (Math.PI * 2) / dxDataElements.length;
@@ -108,4 +107,6 @@ function menuAnimate() {
 		dxDataElements[i].style.left = pos.x+'px';
 		dxDataElements[i].style.top = pos.y+'px';
 	}
+	
+	requestAnimationFrame (menuAnimate);
 }
