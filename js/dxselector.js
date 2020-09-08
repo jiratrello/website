@@ -45,6 +45,10 @@ function createDxElement(dxData, x, y) {
 	return parentelement;
 }
 
+function radialPosition(angle, distance) {
+	
+}
+
 function animate() {
 	requestAnimationFrame( animate );
 	renderer.render( scene, camera );
