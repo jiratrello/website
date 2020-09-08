@@ -19,7 +19,6 @@ a:hover {
   width: 100%;
 	height: 100vh;
   padding: 0 0;
-  background: red; 
 }
 
 #threeDee {
@@ -30,4 +29,5 @@ a:hover {
 
 div.dxElement {
   position: absolute;
+  color: red;
 }
