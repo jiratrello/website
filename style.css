@@ -29,5 +29,14 @@ a:hover {
 
 div.dxElement {
   position: absolute;
-  color: red;
+  color: white;
+  background: black;
+  font-size: larger;
+}
+
+#currentSelectionInfo {
+  width: 100%;
+  padding-top: 80vh;
+  text-align: center;
+  position: absolute;
 }

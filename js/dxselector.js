@@ -1,12 +1,33 @@
+import * as THREE from './three.module.js';
+import{GLTFLoader} from './GLTFLoader.js'; 
+
 //config
 const menuRadius = 350;
 const menuRate = 0.08;
-// cooldown = milliseconds
-const menuCooldown = 100;
+const menuCooldown = 100; //in milliseconds
+const colors = [
+	"0000ff",
+	"00ff00",
+	"ff0000",
+	"ffaa22",
+	"aa22ff",
+	"aaff22",
+	"22ffaa",
+];
+const lightcolors = [
+	0x0000ff,
+	0x00ff00,
+	0xff0000,
+	0xffaa22,
+	0xaa22ff,
+	0xaaff22,
+	0x22ffaa,
+];
 
 //update
 let LastUpdateTime = Date.now();
 let deltaTime = 0;
+let menuMoving = true;
 
 //interface
 let dxDataElements = [];
@@ -20,17 +41,19 @@ let currentCooldownTime = 0;
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, 1, 0.1, 1000 );
 const renderer = new THREE.WebGLRenderer( { alpha: true } );
-const geometry = new THREE.BoxGeometry();
 const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-const cube = new THREE.Mesh( geometry, material );
+let currentGeo;
 
 //debug
 let debugSVG = null;
 
-scene.add( cube );
 camera.position.z = 5;
 
 //init
+
+const light = new THREE.DirectionalLight (0x0000ff, 5);
+scene.add(light);
+
 window.onload = function() {
 	const container = document.getElementById("threeDee");
 	renderer.setSize( container.clientWidth, container.clientHeight );
@@ -40,6 +63,8 @@ window.onload = function() {
 	camera.updateProjectionMatrix();
 	
 	container.appendChild( renderer.domElement );
+
+	document.getElementById("enterButton").addEventListener("mousedown", openSelected);
 
 	window.addEventListener("resize", function() {
 		renderer.setSize( container.clientWidth, container.clientHeight );
@@ -71,7 +96,7 @@ window.onload = function() {
 
 function createDxElement(dxData, x, y) {
 	let parentelement = document.createElement("div");
-	parentelement.innerHTML = "<div>"+dxData.year+"</div><div>"+dxData.name+"</div><div>"+dxData.description+"</div>";
+	parentelement.innerHTML = "<div>"+dxData.shortname+"</div>";
 	parentelement.className = "dxElement";
 	//'px' to convert to pixels
 	parentelement.style.left = x+'px';
@@ -91,6 +116,10 @@ function radialPosition(angle, distance) {
  * MENU CONTROLS
  */
 
+function openSelected() {
+	window.open(GetCurrentlySelectedDxData().url, "_blank");
+}
+
 function GetCurrentlySelectedDxData() {
 	let index = currentSelectionIndex;
 	while(index >= dxData.length) {
@@ -109,14 +138,40 @@ function GetCurrentlySelectedDxData() {
 
 function Update() {
 	deltaTime = Date.now() - LastUpdateTime;
+
 	if (targetRotation == currentRotation) {
 		// Menu reached destination
 		currentCooldownTime -= deltaTime;
+		if (menuMoving == true) {
+			// Initialise on new selection
+			menuMoving = false;
+			let a = GetCurrentlySelectedDxData();
+			document.getElementById("SelectionName").innerText = a.name;
+			document.getElementById("SelectionYear").innerText = a.year;
+			document.getElementById("SelectionDescription").innerText = a.description;
+			// geo
+			if (a.geo != "") {
+				const gltfLoader = new GLTFLoader();
+				const url = a.geo;
+				gltfLoader.load(url, (gltf) => {
+					scene.remove(currentGeo);
+					currentGeo = gltf.scene;
+					scene.add(currentGeo);
+				});
+				
+				// when the option is changed
+				let color1 = lightcolors[Math.floor(Math.random() * lightcolors.length)];
+				let color2 = colors[Math.floor(Math.random() * colors.length)];
+				light.color = new THREE.Color(color1);
+				document.body.style.background = "#"+color2;
+			}
+		}
 		if (inputDelta != 0 && currentCooldownTime <= 0) {
 			currentSelectionIndex += inputDelta;
 		}
 	} else {
 		// Menu travelling
+		menuMoving = true;
 		currentCooldownTime = menuCooldown;
 	}
 	threeDeeAnimate();
@@ -127,8 +182,10 @@ function Update() {
 
 function threeDeeAnimate() {
 	renderer.render( scene, camera );
-	cube.rotation.x += 0.01;
-	cube.rotation.y += 0.01;
+	if (currentGeo != null) {
+		currentGeo.rotation.x += 0.01;
+		currentGeo.rotation.y += 0.01;
+	}
 }
 
 function menuAnimate() {
@@ -148,7 +205,7 @@ function menuAnimate() {
 	}
 
 	for(let i = 0; i < dxDataElements.length; i += 1) {
-		let pos = radialPosition(currentRotation + i * angleDelta, menuRadius);
+		let pos = radialPosition(currentRotation - i * angleDelta, menuRadius);
 		pos.y *= 0.6;
 		pos.x += centerX;
 		pos.y += centerY;
