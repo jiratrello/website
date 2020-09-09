@@ -1,6 +1,20 @@
+//config
+const menuRadius = 350;
+const menuRate = 0.08;
+// cooldown = milliseconds
+const menuCooldown = 100;
+
+//update
+let LastUpdateTime = Date.now();
+let deltaTime = 0;
+
 //interface
 let dxDataElements = [];
-let debugSVG = null;
+let currentSelectionIndex = 0;
+let currentRotation = Math.PI / 2;
+let targetRotation = 0;
+let inputDelta = 0;
+let currentCooldownTime = 0;
 
 //threejs
 const scene = new THREE.Scene();
@@ -9,6 +23,9 @@ const renderer = new THREE.WebGLRenderer( { alpha: true } );
 const geometry = new THREE.BoxGeometry();
 const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 const cube = new THREE.Mesh( geometry, material );
+
+//debug
+let debugSVG = null;
 
 scene.add( cube );
 camera.position.z = 5;
@@ -31,18 +48,25 @@ window.onload = function() {
 		camera.updateProjectionMatrix();
 	});
 
+	window.addEventListener("keydown", function(event) {
+		if (event.code == "ArrowLeft" || event.code == "KeyA") {
+			inputDelta = -1;
+		} else if (event.code == "ArrowRight" || event.code == "KeyD") {
+			inputDelta = 1;
+		}
+	})
+
+	window.addEventListener("keyup", function(event) {
+		if (event.code == "ArrowLeft" || event.code == "KeyA" || event.code == "ArrowRight" || event.code == "KeyD") {
+			inputDelta = 0
+		}
+	})
+
 	for(let i = 0; i < dxData.length; i += 1) {
 		dxDataElements.push(createDxElement(dxData[i], 100, 100+(i*20)));
 	}
 
-	animate();
-	menuAnimate();
-}
-
-//debug gizmos
-function hackerMode(){
-	createDebugCircle(window.innerWidth / 2, window.innerHeight / 2, 350);
-	// window.open("https://youtu.be/VMRaCW6OtXM");
+	Update();
 }
 
 function createDxElement(dxData, x, y) {
@@ -62,11 +86,87 @@ function radialPosition(angle, distance) {
 	return {x: x, y: y};
 }
 
-function animate() {
+
+/**
+ * MENU CONTROLS
+ */
+
+function GetCurrentlySelectedDxData() {
+	let index = currentSelectionIndex;
+	while(index >= dxData.length) {
+		index -= dxData.length;
+	}
+	while(index < 0) {
+		index += dxData.length;
+	}
+	return dxData[index];
+}
+
+
+/**
+ * UPDATE LOOP
+ */
+
+function Update() {
+	deltaTime = Date.now() - LastUpdateTime;
+	if (targetRotation == currentRotation) {
+		// Menu reached destination
+		currentCooldownTime -= deltaTime;
+		if (inputDelta != 0 && currentCooldownTime <= 0) {
+			currentSelectionIndex += inputDelta;
+		}
+	} else {
+		// Menu travelling
+		currentCooldownTime = menuCooldown;
+	}
+	threeDeeAnimate();
+	menuAnimate();
+	requestAnimationFrame (Update);
+	LastUpdateTime = Date.now();
+}
+
+function threeDeeAnimate() {
 	renderer.render( scene, camera );
 	cube.rotation.x += 0.01;
 	cube.rotation.y += 0.01;
-	requestAnimationFrame( animate );
+}
+
+function menuAnimate() {
+	const centerX = window.innerWidth / 2;
+	const centerY = window.innerHeight / 2;
+	const angleDelta = (Math.PI * 2) / dxDataElements.length;
+
+	targetRotation = currentSelectionIndex * angleDelta + Math.PI / 2;
+	if (targetRotation > currentRotation) {
+		currentRotation += menuRate;
+	}
+	if (targetRotation < currentRotation) {
+		currentRotation -= menuRate;
+	}
+	if (Math.abs(currentRotation - targetRotation) <= menuRate) {
+		currentRotation = targetRotation;
+	}
+
+	for(let i = 0; i < dxDataElements.length; i += 1) {
+		let pos = radialPosition(currentRotation + i * angleDelta, menuRadius);
+		pos.y *= 0.6;
+		pos.x += centerX;
+		pos.y += centerY;
+		pos.x -= dxDataElements[i].clientWidth / 2;
+		pos.y -= dxDataElements[i].clientHeight / 2;
+		dxDataElements[i].style.left = pos.x+'px';
+		dxDataElements[i].style.top = pos.y+'px';
+	}
+}
+
+/**
+ * DEBUG
+ */
+
+//Gizmos
+function hackerMode(){
+	createDebugCircle(window.innerWidth / 2, window.innerHeight / 2, 350);
+	// window.open("https://youtu.be/VMRaCW6OtXM");
 }
 
 function createDebugCircle(x, y, radius)
@@ -89,24 +189,4 @@ function createDebugCircle(x, y, radius)
 	circle.setAttribute("stroke", "black");
 
 	debugSVG.appendChild(circle);
-}
-
-function menuAnimate() {
-	const distance = 350;
-	const rate = 0.0005;
-	const centerX = window.innerWidth / 2;
-	const centerY = window.innerHeight / 2;
-	const angleDelta = (Math.PI * 2) / dxDataElements.length;
-
-	for(let i = 0; i < dxDataElements.length; i += 1) {
-		let pos = radialPosition(Date.now()*rate+i*angleDelta, distance);
-		pos.x += centerX;
-		pos.y += centerY;
-		pos.x -= dxDataElements[i].clientWidth / 2;
-		pos.y -= dxDataElements[i].clientHeight / 2;
-		dxDataElements[i].style.left = pos.x+'px';
-		dxDataElements[i].style.top = pos.y+'px';
-	}
-	
-	requestAnimationFrame (menuAnimate);
 }
