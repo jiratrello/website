@@ -26,7 +26,7 @@ let backgroundWrapper = null;
 //threejs
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, 1, 0.1, 1000 );
-const renderer = new THREE.WebGLRenderer( { alpha: true } );
+const renderer = new THREE.WebGLRenderer( { alpha: false } );
 const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
 let currentGeo;
 
