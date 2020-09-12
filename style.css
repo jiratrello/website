@@ -1,9 +1,15 @@
 body{
   margin: 0px;
+  padding: 0px;
   /*background: grey;*/
+  font-family: "Lucida Console", Courier, monospace;
+}
+
+#background-wrapper {
+  width: 100vw;
+  height: 100vh;
   background-position: center;
   background-size: cover;
-  font-family: "Lucida Console", Courier, monospace;
 }
 
 a:hover {

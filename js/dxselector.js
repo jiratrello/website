@@ -2,27 +2,10 @@ import * as THREE from './three.module.js';
 import{GLTFLoader} from './GLTFLoader.js'; 
 
 //config
+const menuRatio = 1;
 const menuRadius = 350;
 const menuRate = 0.08;
 const menuCooldown = 100; //in milliseconds
-const colors = [
-	"0000ff",
-	"00ff00",
-	"ff0000",
-	"ffaa22",
-	"aa22ff",
-	"aaff22",
-	"22ffaa",
-];
-const lightcolors = [
-	0x0000ff,
-	0x00ff00,
-	0xff0000,
-	0xffaa22,
-	0xaa22ff,
-	0xaaff22,
-	0x22ffaa,
-];
 
 //update
 let LastUpdateTime = Date.now();
@@ -36,6 +19,9 @@ let currentRotation = Math.PI / 2;
 let targetRotation = 0;
 let inputDelta = 0;
 let currentCooldownTime = 0;
+
+//document elements
+let backgroundWrapper = null;
 
 //threejs
 const scene = new THREE.Scene();
@@ -63,6 +49,8 @@ window.onload = function() {
 	camera.updateProjectionMatrix();
 	
 	container.appendChild( renderer.domElement );
+
+	backgroundWrapper = document.getElementById("background-wrapper");
 
 	document.getElementById("enterButton").addEventListener("mousedown", openSelected);
 
@@ -175,12 +163,7 @@ function displayDxData(theData) {
 			scene.add(currentGeo);
 		});
 	}
-	// when the option is changed
-	// let color1 = lightcolors[Math.floor(Math.random() * lightcolors.length)];
-	// let color2 = colors[Math.floor(Math.random() * colors.length)];
-	// light.color = new THREE.Color(color1);
-	// document.body.style.background = "#"+color2;
-	document.body.style["background-image"] = `url(${theData.background})`;
+	backgroundWrapper.style["background-image"] = `url(${theData.background})`;
 }
 
 function threeDeeAnimate() {
@@ -209,7 +192,7 @@ function menuAnimate() {
 
 	for(let i = 0; i < dxDataElements.length; i += 1) {
 		let pos = radialPosition(currentRotation - i * angleDelta, menuRadius);
-		pos.y *= 0.6;
+		pos.y *= menuRatio;
 		pos.x += centerX;
 		pos.y += centerY;
 		pos.x -= dxDataElements[i].clientWidth / 2;
