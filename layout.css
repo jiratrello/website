@@ -1,0 +1,19 @@
+body{
+    background-color: white;
+}
+
+#layout-container{
+    height: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-rows: auto 150px;
+    background-color: darkred;
+}
+
+#spinner{
+    background-color: darkslateblue;
+}
+
+#infobox{
+    background-color: darkslategrey;
+}

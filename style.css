@@ -12,6 +12,23 @@ body{
   background-size: cover;
 }
 
+#layout-container{
+  height: calc(100% - 100px);
+  /*! margin: 100px 100px; */
+  display: grid;
+  grid-template-rows: auto 150px;
+  background-color: darkred;
+  padding-top: 50px;
+}
+
+#top-half{
+  background-color: darkslateblue;
+}
+
+#bottom-half{
+  background-color: darkslategrey;
+}
+
 a:hover {
   font-style: italic;
 }
@@ -22,10 +39,10 @@ a:hover {
 }
 
 #threeDeeParent {
-	display: flex;
-  position: absolute; 
-  width: 100%;
-	height: 100vh;
+	/*! display: flex; */
+  /*! position: absolute; */ 
+  /*! width: 100%; */
+	/*! height: 100vh; */
   padding: 0 0;
 }
 
@@ -43,8 +60,5 @@ div.dxElement {
 }
 
 #currentSelectionInfo {
-  width: 100%;
-  padding-top: 80vh;
   text-align: center;
-  position: absolute;
 }

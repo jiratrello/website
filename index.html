@@ -2,31 +2,43 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Official Jira Trello</title>
+    <title>Official Jira TrelloTM</title>
+    <script src="js/dxdata.js"></script>
+    <script src="js/dxselector.js" type="module"></script>
     <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <div id="background-wrapper">
-      <script = src="js/dxdata.js"></script>
-      <script src="js/dxselector.js" type="module"></script>
-      <div id="threeDeeParent">
-        <div id="threeDee">
-        </div>
-      </div>
+
       <div id="header">
-      <b>jiratrello</b>
+        <b>jiratrello</b>
         <a href="info.html">info</a>
         <a href="homezome.html">blog</a>
         <a href="mailto:mail@troyduguid.com">contact</a>
         <button onmousedown="inputDelta=-1" onmouseup="inputDelta=0"> Left </button>
         <button onmousedown="inputDelta=1" onmouseup="inputDelta=0"> Right </button>
       </div>
-      <div id="currentSelectionInfo">
-        <div id="SelectionName">Name</div>
-        <div id="SelectionYear">Year</div>
-        <div id="SelectionDescription">Description</div>
-        <button id="enterButton"> Enter </button>
-      </div>
-  </div>
+
+      <div id="layout-container">
+
+        <div id="top-half">
+          <div id="threeDeeParent">
+            <div id="threeDee">
+            </div>
+          </div>
+        </div>
+
+        <div id="bottom-half">
+          <div id="currentSelectionInfo">
+            <div id="SelectionName">Name</div>
+            <div id="SelectionYear">Year</div>
+            <div id="SelectionDescription">Description</div>
+            <button id="enterButton"> Enter </button>
+          </div>
+        </div>
+
+      </div> <!-- end of layout-container -->
+
+    </div>
   </body>
 </html>

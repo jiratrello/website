@@ -1,6 +1,6 @@
 const dxData = [
     {
-        shortname: 'AAA3',
+        shortname: 'UTO',
         name: 'Utopias: Navigating Without Coordinates',
         description: 'Is a collective utopia possible?',
         year: '2020',
@@ -9,7 +9,7 @@ const dxData = [
         background: '../imgs/utopias.png',
     },
     {
-        shortname: 'AAA2',
+        shortname: 'DMU',
         name: 'Data Mutations',
         description: 'We mutate each other',
         year: '2017',
@@ -18,7 +18,7 @@ const dxData = [
         background: '../imgs/datamutations.png',
     },
     {
-        shortname: 'HZ',
+        shortname: 'HZM',
         name: 'Homezome',
         description: 'Build crap',
         year: '2016',
@@ -27,7 +27,7 @@ const dxData = [
         background: '../imgs/homezome.png',
     },
     {
-        shortname: 'AAA1',
+        shortname: 'DYS',
         name: 'Dystropicana',
         description: 'Multimedia archipelago',
         year: '2016',
