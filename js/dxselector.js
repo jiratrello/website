@@ -145,26 +145,7 @@ function Update() {
 		if (menuMoving == true) {
 			// Initialise on new selection
 			menuMoving = false;
-			let a = GetCurrentlySelectedDxData();
-			document.getElementById("SelectionName").innerText = a.name;
-			document.getElementById("SelectionYear").innerText = a.year;
-			document.getElementById("SelectionDescription").innerText = a.description;
-			// geo
-			if (a.geo != "") {
-				const gltfLoader = new GLTFLoader();
-				const url = a.geo;
-				gltfLoader.load(url, (gltf) => {
-					scene.remove(currentGeo);
-					currentGeo = gltf.scene;
-					scene.add(currentGeo);
-				});
-				
-				// when the option is changed
-				let color1 = lightcolors[Math.floor(Math.random() * lightcolors.length)];
-				let color2 = colors[Math.floor(Math.random() * colors.length)];
-				light.color = new THREE.Color(color1);
-				document.body.style.background = "#"+color2;
-			}
+			displayDxData(GetCurrentlySelectedDxData());
 		}
 		if (inputDelta != 0 && currentCooldownTime <= 0) {
 			currentSelectionIndex += inputDelta;
@@ -178,6 +159,28 @@ function Update() {
 	menuAnimate();
 	requestAnimationFrame (Update);
 	LastUpdateTime = Date.now();
+}
+
+function displayDxData(theData) {
+	document.getElementById("SelectionName").innerText = theData.name;
+	document.getElementById("SelectionYear").innerText = theData.year;
+	document.getElementById("SelectionDescription").innerText = theData.description;
+	// geo
+	if (theData.geo != "") {
+		const gltfLoader = new GLTFLoader();
+		const url = theData.geo;
+		gltfLoader.load(url, (gltf) => {
+			scene.remove(currentGeo);
+			currentGeo = gltf.scene;
+			scene.add(currentGeo);
+		});
+	}
+	// when the option is changed
+	// let color1 = lightcolors[Math.floor(Math.random() * lightcolors.length)];
+	// let color2 = colors[Math.floor(Math.random() * colors.length)];
+	// light.color = new THREE.Color(color1);
+	// document.body.style.background = "#"+color2;
+	document.body.style["background-image"] = `url(${theData.background})`;
 }
 
 function threeDeeAnimate() {

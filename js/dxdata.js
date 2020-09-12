@@ -6,7 +6,7 @@ const dxData = [
         year: '2020',
         url: "https://utopias.aaasoftwa.re/",
         geo: '../res/utopias.glb',
-        background: "",
+        background: '../imgs/utopias.png',
     },
     {
         shortname: 'AAA2',
@@ -15,7 +15,7 @@ const dxData = [
         year: '2017',
         url: "https://data-mutations.aaasoftwa.re/",
         geo: '../res/datamutations.glb',
-        background: "",
+        background: '../imgs/datamutations.png',
     },
     {
         shortname: 'HZ',
@@ -24,7 +24,7 @@ const dxData = [
         year: '2016',
         url: "www.google.com",
         geo: '../res/homezome.glb',
-        background: "",
+        background: '../imgs/homezome.png',
     },
     {
         shortname: 'AAA1',
@@ -33,6 +33,6 @@ const dxData = [
         year: '2016',
         url: "https://aaasoftwa.re/dystropicana/",
         geo: '../res/dystropicana.glb',
-        background: "",
+        background: '../imgs/dystropicana.png',
     },
 ];
